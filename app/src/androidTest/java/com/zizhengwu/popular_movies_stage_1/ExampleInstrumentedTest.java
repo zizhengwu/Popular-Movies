@@ -3,9 +3,13 @@ package com.zizhengwu.popular_movies_stage_1;
 import android.content.Context;
 import android.support.test.InstrumentationRegistry;
 import android.support.test.runner.AndroidJUnit4;
+import android.util.Log;
 
+import org.json.JSONException;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+
+import java.io.IOException;
 
 import static org.junit.Assert.*;
 
@@ -22,5 +26,15 @@ public class ExampleInstrumentedTest {
         Context appContext = InstrumentationRegistry.getTargetContext();
 
         assertEquals("com.zizhengwu.popular_movies_stage_1", appContext.getPackageName());
+    }
+
+    @Test
+    public void popularApi() throws IOException, JSONException {
+        Log.d("API", String.valueOf(MovieDB.getPopular()));
+    }
+
+    @Test
+    public void topRatedApi() throws IOException, JSONException {
+        Log.d("API", String.valueOf(MovieDB.getTopRated()));
     }
 }
