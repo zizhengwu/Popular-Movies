@@ -1,12 +1,14 @@
 package com.zizhengwu.popular_movies_stage_1;
 
-import org.json.JSONArray;
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
+
 import org.json.JSONException;
-import org.json.JSONObject;
 
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
@@ -25,25 +27,23 @@ public class MovieDB {
         }
     }
 
-    public static List<String> getPopular() throws IOException, JSONException {
+    public static Movie[] getPopular() throws IOException, JSONException {
         return getApi("popular");
     }
 
-    public static List<String> getTopRated() throws IOException, JSONException {
+    public static Movie[] getTopRated() throws IOException, JSONException {
         return getApi("top_rated");
     }
 
-    public static List<String> getApi(String type) throws IOException, JSONException {
+    public static Movie[] getApi(String type) throws IOException, JSONException {
         List<String> urls = new ArrayList<String>();
 
-        MovieDB example = new MovieDB();
-        String response = example.run("http://api.themoviedb.org/3/movie/" + type + "?api_key=412e9780d02673b7599233b1636a0f0e");
-        JSONObject obj = new JSONObject(response);
-        JSONArray arr = obj.getJSONArray("results");
-        for (int i = 0; i < arr.length(); i++) {
-            urls.add(arr.getJSONObject(i).getString("poster_path"));
-        }
-        return urls;
+        String response =  new MovieDB().run("http://api.themoviedb.org/3/movie/" + type + "?api_key=412e9780d02673b7599233b1636a0f0e");
+        Gson gson = new Gson();
+        Map<String, Object> map = gson.fromJson(response, new TypeToken<Map<String, Object>>(){}.getType());
+        Movie[] movies = gson.fromJson(gson.toJson(map.get("results")), Movie[].class);
+
+        return movies;
     }
 
 }

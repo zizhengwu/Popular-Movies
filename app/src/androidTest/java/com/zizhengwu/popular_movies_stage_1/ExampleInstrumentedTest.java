@@ -5,6 +5,8 @@ import android.support.test.InstrumentationRegistry;
 import android.support.test.runner.AndroidJUnit4;
 import android.util.Log;
 
+import com.google.gson.Gson;
+
 import org.json.JSONException;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -30,11 +32,13 @@ public class ExampleInstrumentedTest {
 
     @Test
     public void popularApi() throws IOException, JSONException {
-        Log.d("API", String.valueOf(MovieDB.getPopular()));
+        Gson gson = new Gson();
+        Log.d("API", gson.toJson(MovieDB.getPopular()));
     }
 
     @Test
     public void topRatedApi() throws IOException, JSONException {
-        Log.d("API", String.valueOf(MovieDB.getTopRated()));
+        Gson gson = new Gson();
+        Log.d("API", gson.toJson(MovieDB.getTopRated()));
     }
 }
