@@ -1,6 +1,5 @@
 package com.zizhengwu.popular_movies_stage_1;
 
-import android.content.Context;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.Menu;
@@ -10,23 +9,29 @@ import android.widget.AdapterView;
 import android.widget.GridView;
 import android.widget.Toast;
 
-public class MainActivity extends AppCompatActivity {
+import org.json.JSONException;
 
+import java.io.IOException;
+
+import rx.Observable;
+import rx.android.schedulers.AndroidSchedulers;
+import rx.functions.Action1;
+import rx.functions.Func1;
+import rx.schedulers.Schedulers;
+import rx.subjects.PublishSubject;
+import rx.subjects.Subject;
+
+public class MainActivity extends AppCompatActivity {
+    private ImageAdapter imageAdapter;
+    private SortBy sortBy;
+    private Subject<SortBy, SortBy> sortObservable = PublishSubject.create();
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
-        GridView gridview = (GridView) findViewById(R.id.gridview);
-        gridview.setAdapter(new ImageAdapter(this));
-
-        gridview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            public void onItemClick(AdapterView<?> parent, View v,
-                                    int position, long id) {
-                Toast.makeText(MainActivity.this, "" + position,
-                        Toast.LENGTH_SHORT).show();
-            }
-        });
+        sortBy = SortBy.POPULAR;
+        setUpGridView();
+        setUpObservables();
     }
 
     @Override
@@ -39,11 +44,61 @@ public class MainActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         int itemThatWasClickedId = item.getItemId();
         if (itemThatWasClickedId == R.id.action_sort) {
-            Context context = MainActivity.this;
-            String textToShow = "Sort clicked";
-            Toast.makeText(context, textToShow, Toast.LENGTH_SHORT).show();
+            switch (sortBy) {
+                case POPULAR:
+                    sortBy = SortBy.TOP_RATED;
+                    break;
+                case TOP_RATED:
+                    sortBy = SortBy.POPULAR;
+                    break;
+            }
+            sortObservable.onNext(sortBy);
             return true;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    void setUpGridView() {
+        GridView gridview = (GridView) findViewById(R.id.gridview);
+        imageAdapter = new ImageAdapter(this);
+        gridview.setAdapter(imageAdapter);
+
+        gridview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            public void onItemClick(AdapterView<?> parent, View v,
+                                    int position, long id) {
+                Toast.makeText(MainActivity.this, "" + position,
+                        Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
+    void setUpObservables() {
+        sortObservable.flatMap(new Func1<SortBy, Observable<Movie[]>>() {
+
+            @Override
+            public Observable<Movie[]> call(SortBy sortBy) {
+                try {
+                    switch (sortBy) {
+                        case POPULAR:
+                            return Observable.just(MovieDB.getPopular()); // NETWORK IO
+                        case TOP_RATED:
+                            return Observable.just(MovieDB.getTopRated()); // NETWORK IO
+                    }
+                } catch (IOException e) {
+                    e.printStackTrace();
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+                return Observable.just(new Movie[0]);
+            }
+        })
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Action1<Movie[]>() {
+            @Override
+            public void call(Movie[] movies) {
+                imageAdapter.loadData(movies);
+            }
+        });
     }
 }

@@ -9,15 +9,20 @@ import android.widget.ImageView;
 
 import com.squareup.picasso.Picasso;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class ImageAdapter extends BaseAdapter {
     private Context mContext;
+    private Movie[] movies;
 
     public ImageAdapter(Context c) {
+        movies = new Movie[0];
         mContext = c;
     }
 
     public int getCount() {
-        return 10;
+        return movies.length;
     }
 
     public Object getItem(int position) {
@@ -41,7 +46,12 @@ public class ImageAdapter extends BaseAdapter {
             imageView = (ImageView) convertView;
         }
 
-        Picasso.with(mContext).load("http://i.imgur.com/DvpvklR.png").into(imageView);
+        Picasso.with(mContext).load("http://image.tmdb.org/t/p/w185/" + movies[position].poster_path).into(imageView);
         return imageView;
+    }
+
+    public void loadData(Movie[] movies) {
+        this.movies = movies;
+        notifyDataSetChanged();
     }
 }
