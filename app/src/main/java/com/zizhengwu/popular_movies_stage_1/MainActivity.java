@@ -14,6 +14,7 @@ import org.json.JSONException;
 import java.io.IOException;
 
 import rx.Observable;
+import rx.Scheduler;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.functions.Action1;
 import rx.functions.Func1;
@@ -25,6 +26,7 @@ public class MainActivity extends AppCompatActivity {
     private ImageAdapter imageAdapter;
     private SortBy sortBy;
     private Subject<SortBy, SortBy> sortObservable = PublishSubject.create();
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -52,6 +54,7 @@ public class MainActivity extends AppCompatActivity {
                     sortBy = SortBy.POPULAR;
                     break;
             }
+            Toast.makeText(this, sortBy.toString(), Toast.LENGTH_SHORT).show();
             sortObservable.onNext(sortBy);
             return true;
         }
@@ -77,28 +80,22 @@ public class MainActivity extends AppCompatActivity {
 
             @Override
             public Observable<Movie[]> call(SortBy sortBy) {
-                try {
-                    switch (sortBy) {
-                        case POPULAR:
-                            return Observable.just(MovieDB.getPopular()); // NETWORK IO
-                        case TOP_RATED:
-                            return Observable.just(MovieDB.getTopRated()); // NETWORK IO
-                    }
-                } catch (IOException e) {
-                    e.printStackTrace();
-                } catch (JSONException e) {
-                    e.printStackTrace();
+                switch (sortBy) {
+                    case POPULAR:
+                        return Observable.fromCallable(() -> MovieDB.getPopular()).subscribeOn(Schedulers.io());
+                    case TOP_RATED:
+                        return Observable.fromCallable(() -> MovieDB.getTopRated()).subscribeOn(Schedulers.io());
+                    default:
+                        return Observable.fromCallable(() -> new Movie[0]).subscribeOn(Schedulers.io());
                 }
-                return Observable.just(new Movie[0]);
             }
         })
-                .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Action1<Movie[]>() {
-            @Override
-            public void call(Movie[] movies) {
-                imageAdapter.loadData(movies);
-            }
-        });
+                    @Override
+                    public void call(Movie[] movies) {
+                        imageAdapter.loadData(movies);
+                    }
+                });
     }
 }
