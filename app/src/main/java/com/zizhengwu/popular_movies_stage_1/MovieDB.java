@@ -1,5 +1,6 @@
 package com.zizhengwu.popular_movies_stage_1;
 
+import android.content.res.Resources;
 import android.util.Log;
 
 import com.google.gson.Gson;
@@ -42,7 +43,7 @@ public class MovieDB {
 
         String response = "{\"results\":[]}";
         try {
-            response = new MovieDB().run("http://api.themoviedb.org/3/movie/" + type + "?api_key=412e9780d02673b7599233b1636a0f0e");
+            response = new MovieDB().run("http://api.themoviedb.org/3/movie/" + type + "?api_key="+"412e9780d02673b7599233b1636a0f0e");
         } catch (IOException e) {
             Log.d("Network", "no network!");
         }
