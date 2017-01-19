@@ -35,10 +35,16 @@ public class MovieDB {
         return getApi("top_rated");
     }
 
-    public static Movie[] getApi(String type) throws IOException, JSONException {
+    public static Movie[] getApi(String type) {
         List<String> urls = new ArrayList<String>();
 
-        String response =  new MovieDB().run("http://api.themoviedb.org/3/movie/" + type + "?api_key=412e9780d02673b7599233b1636a0f0e");
+        String response = null;
+        try {
+            response = new MovieDB().run("http://api.themoviedb.org/3/movie/" + type + "?api_key=412e9780d02673b7599233b1636a0f0e");
+        } catch (IOException e) {
+            e.printStackTrace();
+            response = "{\"results\":[]}";
+        }
         Gson gson = new Gson();
         Map<String, Object> map = gson.fromJson(response, new TypeToken<Map<String, Object>>(){}.getType());
         Movie[] movies = gson.fromJson(gson.toJson(map.get("results")), Movie[].class);
