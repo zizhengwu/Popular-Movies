@@ -1,5 +1,6 @@
 package com.zizhengwu.popular_movies_stage_1;
 
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.Menu;
@@ -69,8 +70,9 @@ public class MainActivity extends AppCompatActivity {
         gridview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             public void onItemClick(AdapterView<?> parent, View v,
                                     int position, long id) {
-                Toast.makeText(MainActivity.this, "" + position,
-                        Toast.LENGTH_SHORT).show();
+                Intent intent = new Intent(MainActivity.this, MovieDetailActivity.class);
+                intent.putExtra("movie", imageAdapter.getMovies()[position]);
+                startActivity(intent);
             }
         });
     }

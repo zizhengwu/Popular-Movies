@@ -1,5 +1,7 @@
 package com.zizhengwu.popular_movies_stage_1;
 
+import android.util.Log;
+
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
@@ -38,12 +40,11 @@ public class MovieDB {
     public static Movie[] getApi(String type) {
         List<String> urls = new ArrayList<String>();
 
-        String response = null;
+        String response = "{\"results\":[]}";
         try {
             response = new MovieDB().run("http://api.themoviedb.org/3/movie/" + type + "?api_key=412e9780d02673b7599233b1636a0f0e");
         } catch (IOException e) {
-            e.printStackTrace();
-            response = "{\"results\":[]}";
+            Log.d("Network", "no network!");
         }
         Gson gson = new Gson();
         Map<String, Object> map = gson.fromJson(response, new TypeToken<Map<String, Object>>(){}.getType());

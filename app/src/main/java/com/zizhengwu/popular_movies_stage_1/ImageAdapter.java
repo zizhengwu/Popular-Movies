@@ -14,9 +14,21 @@ import java.util.List;
 
 public class ImageAdapter extends BaseAdapter {
     private Context mContext;
+
+    public Movie[] getMovies() {
+        return movies;
+    }
+
+    public void setMovies(Movie[] movies) {
+        this.movies = movies;
+    }
+
     private Movie[] movies;
 
+    final float scale;
+
     public ImageAdapter(Context c) {
+        scale = c.getResources().getDisplayMetrics().density;
         movies = new Movie[0];
         mContext = c;
     }
@@ -39,7 +51,7 @@ public class ImageAdapter extends BaseAdapter {
         if (convertView == null) {
             // if it's not recycled, initialize some attributes
             imageView = new ImageView(mContext);
-            imageView.setLayoutParams(new GridView.LayoutParams(85, 85));
+            imageView.setLayoutParams(new GridView.LayoutParams((int)(90*scale+0.5f), (int)(120*scale+0.5f)));
             imageView.setScaleType(ImageView.ScaleType.CENTER_CROP);
             imageView.setPadding(8, 8, 8, 8);
         } else {
@@ -51,7 +63,7 @@ public class ImageAdapter extends BaseAdapter {
     }
 
     public void loadData(Movie[] movies) {
-        this.movies = movies;
+        setMovies(movies);
         notifyDataSetChanged();
     }
 }
