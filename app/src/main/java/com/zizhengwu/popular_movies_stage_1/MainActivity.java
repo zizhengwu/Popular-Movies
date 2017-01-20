@@ -10,9 +10,12 @@ import android.widget.AdapterView;
 import android.widget.GridView;
 import android.widget.Toast;
 
+import java.util.concurrent.Callable;
+
 import rx.Observable;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.functions.Action1;
+import rx.functions.Func0;
 import rx.functions.Func1;
 import rx.schedulers.Schedulers;
 import rx.subjects.PublishSubject;
@@ -27,9 +30,9 @@ public class MainActivity extends AppCompatActivity {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        sortBy = SortBy.POPULAR;
         setUpGridView();
         setUpObservables();
+        sortBy = SortBy.POPULAR;
     }
 
     @Override
@@ -79,11 +82,23 @@ public class MainActivity extends AppCompatActivity {
             public Observable<Movie[]> call(SortBy sortBy) {
                 switch (sortBy) {
                     case POPULAR:
-                        return Observable.fromCallable(() -> MovieDB.getPopular()).subscribeOn(Schedulers.io());
+                        return Observable.fromCallable(new Callable<Movie[]>() {
+                            @Override
+                            public Movie[] call() throws Exception {
+                                return MovieDB.getPopular();
+                            }
+                        }).subscribeOn(Schedulers.io());
+                        // lambda one-liner return Observable.fromCallable(() -> ).subscribeOn(Schedulers.io());
                     case TOP_RATED:
-                        return Observable.fromCallable(() -> MovieDB.getTopRated()).subscribeOn(Schedulers.io());
+                        return Observable.fromCallable(new Callable<Movie[]>() {
+                            @Override
+                            public Movie[] call() throws Exception {
+                                return MovieDB.getTopRated();
+                            }
+                        }).subscribeOn(Schedulers.io());
+                        // lambda one-liner return Observable.fromCallable(() -> MovieDB.getTopRated()).subscribeOn(Schedulers.io());
                     default:
-                        return Observable.fromCallable(() -> new Movie[0]).subscribeOn(Schedulers.io());
+                        throw new UnsupportedOperationException();
                 }
             }
         })
