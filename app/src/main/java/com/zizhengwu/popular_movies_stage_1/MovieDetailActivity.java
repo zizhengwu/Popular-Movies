@@ -17,7 +17,7 @@ public class MovieDetailActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_movie_detail);
-        movie = (Movie) getIntent().getSerializableExtra("movie");
+        movie = (Movie) getIntent().getExtras().getParcelable("movie");
         setUpViews();
     }
 
@@ -31,7 +31,7 @@ public class MovieDetailActivity extends AppCompatActivity {
         title.setText(movie.title);
         release_date.setText(movie.release_date);
         overview.setText(movie.overview);
-        vote_average.setText(movie.vote_average.toString());
+        vote_average.setText(movie.vote_average);
         Picasso.with(this).load("http://image.tmdb.org/t/p/w185/"+movie.poster_path).into(poster);
 
     }

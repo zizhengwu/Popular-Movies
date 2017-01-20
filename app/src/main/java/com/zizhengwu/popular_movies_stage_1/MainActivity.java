@@ -1,6 +1,7 @@
 package com.zizhengwu.popular_movies_stage_1;
 
 import android.content.Intent;
+import android.os.Parcelable;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.Menu;
@@ -10,6 +11,9 @@ import android.widget.AdapterView;
 import android.widget.GridView;
 import android.widget.Toast;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 import java.util.concurrent.Callable;
 
 import rx.Observable;
@@ -30,7 +34,7 @@ public class MainActivity extends AppCompatActivity {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        setUpGridView();
+        setUpGridView(savedInstanceState);
         setUpObservables();
         sortBy = SortBy.POPULAR;
     }
@@ -60,9 +64,21 @@ public class MainActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    void setUpGridView() {
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putParcelableArrayList("movie", new ArrayList<Movie>(Arrays.asList(imageAdapter.getMovies())));
+    }
+
+    void setUpGridView(Bundle savedInstanceState) {
         GridView gridview = (GridView) findViewById(R.id.gridview);
         imageAdapter = new ImageAdapter(this);
+
+        if (savedInstanceState != null) {
+            List<Movie> items = savedInstanceState.getParcelableArrayList("movie");
+            Movie[] movies = items.toArray(new Movie[items.size()]);
+            imageAdapter.loadData(movies);
+        }
         gridview.setAdapter(imageAdapter);
 
         gridview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
