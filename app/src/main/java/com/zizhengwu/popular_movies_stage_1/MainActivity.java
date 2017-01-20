@@ -30,13 +30,19 @@ public class MainActivity extends AppCompatActivity {
     private SortBy sortBy;
     private Subject<SortBy, SortBy> sortObservable = PublishSubject.create();
 
+    private void changeSortMetric(SortBy sortBy) {
+        this.sortBy = sortBy;
+        Toast.makeText(this, this.sortBy.toString(), Toast.LENGTH_SHORT).show();
+        sortObservable.onNext(this.sortBy);
+    }
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         setUpGridView(savedInstanceState);
         setUpObservables();
-        sortBy = SortBy.POPULAR;
+        changeSortMetric(SortBy.POPULAR);
     }
 
     @Override
@@ -51,14 +57,12 @@ public class MainActivity extends AppCompatActivity {
         if (itemThatWasClickedId == R.id.action_sort) {
             switch (sortBy) {
                 case POPULAR:
-                    sortBy = SortBy.TOP_RATED;
+                    changeSortMetric(SortBy.TOP_RATED);
                     break;
                 case TOP_RATED:
-                    sortBy = SortBy.POPULAR;
+                    changeSortMetric(SortBy.POPULAR);
                     break;
             }
-            Toast.makeText(this, sortBy.toString(), Toast.LENGTH_SHORT).show();
-            sortObservable.onNext(sortBy);
             return true;
         }
         return super.onOptionsItemSelected(item);
