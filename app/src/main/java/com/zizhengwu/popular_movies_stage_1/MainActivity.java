@@ -39,6 +39,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        Singleton.getInstance().setContext(this);
         setContentView(R.layout.activity_main);
         setUpGridView(savedInstanceState);
         setUpObservables();

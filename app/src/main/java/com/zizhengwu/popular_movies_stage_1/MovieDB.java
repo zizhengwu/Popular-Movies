@@ -43,7 +43,7 @@ public class MovieDB {
 
         String response = "{\"results\":[]}";
         try {
-            response = new MovieDB().run("http://api.themoviedb.org/3/movie/" + type + "?api_key="+"412e9780d02673b7599233b1636a0f0e");
+            response = new MovieDB().run("http://api.themoviedb.org/3/movie/" + type + "?api_key=" + Singleton.getInstance().getContext().getResources().getString(R.string.MovieDBApiKey));
         } catch (IOException e) {
             Log.d("Network", "no network!");
         }
