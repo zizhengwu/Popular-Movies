@@ -49,20 +49,6 @@ public class ExampleInstrumentedTest {
 
     @Test
     public void movieTrailerApi() {
-        Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl("http://api.themoviedb.org/")
-                .addConverterFactory(ApiAdapter.buildMovieTrailerGsonConverter())
-                .build();
-
-        MovieDBService service = retrofit.create(MovieDBService.class);
-        Call<MovieTrailer[]> call = service.findTrailerByID("127380", getInstrumentation().getTargetContext().getResources().getString(R.string.MovieDBApiKey));
-        try {
-            Response<MovieTrailer[]> response = call.execute();
-            MovieTrailer[] trailers = response.body();
-            Log.d("API", new Gson().toJson(trailers));
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
+        Log.d("API", new Gson().toJson(ApiHelper.fetchMovieTrailers("127380", getInstrumentation().getTargetContext().getResources().getString(R.string.MovieDBApiKey))));
     }
 }
