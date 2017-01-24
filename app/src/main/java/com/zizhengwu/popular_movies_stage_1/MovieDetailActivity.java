@@ -1,15 +1,16 @@
 package com.zizhengwu.popular_movies_stage_1;
 
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.view.View;
-import android.view.ViewGroup;
+import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.google.gson.Gson;
 import com.squareup.picasso.Picasso;
+
+import rx.Subscriber;
+import rx.android.schedulers.AndroidSchedulers;
 
 public class MovieDetailActivity extends AppCompatActivity {
     Movie movie;
@@ -34,5 +35,23 @@ public class MovieDetailActivity extends AppCompatActivity {
         vote_average.setText(movie.vote_average);
         Picasso.with(this).load("http://image.tmdb.org/t/p/w185/"+movie.poster_path).into(poster);
 
+        ApiHelper.fetchMovieTrailers(movie.id, getResources().getString(R.string.MovieDBApiKey))
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Subscriber<MovieTrailer[]>() {
+                    @Override
+                    public void onCompleted() {
+
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+
+                    }
+
+                    @Override
+                    public void onNext(MovieTrailer[] movieTrailers) {
+                        Log.d("API", new Gson().toJson(movieTrailers));
+                    }
+                });
     }
 }

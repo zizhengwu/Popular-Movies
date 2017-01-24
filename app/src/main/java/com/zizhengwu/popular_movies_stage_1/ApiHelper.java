@@ -1,31 +1,20 @@
 package com.zizhengwu.popular_movies_stage_1;
 
-import android.util.Log;
-
-import com.google.gson.Gson;
-
-import java.io.IOException;
-
-import retrofit2.Call;
-import retrofit2.Response;
 import retrofit2.Retrofit;
+import retrofit2.adapter.rxjava.RxJavaCallAdapterFactory;
+import rx.Observable;
+import rx.schedulers.Schedulers;
 
 public class ApiHelper {
-    public static MovieTrailer[] fetchMovieTrailers(String id, String apiKey) {
-        MovieTrailer[] trailers = new MovieTrailer[0];
+    public static Observable<MovieTrailer[]> fetchMovieTrailers(String id, String apiKey) {
         Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl("http://api.themoviedb.org/")
                 .addConverterFactory(ApiAdapter.buildMovieTrailerGsonConverter())
+                .addCallAdapterFactory(RxJavaCallAdapterFactory.createWithScheduler(Schedulers.io()))
                 .build();
 
         MovieDBService service = retrofit.create(MovieDBService.class);
-        Call<MovieTrailer[]> call = service.findTrailerByID(id, apiKey);
-        try {
-            Response<MovieTrailer[]> response = call.execute();
-            trailers = response.body();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        return trailers;
+
+        return service.findTrailerByID(id, apiKey);
     }
 }

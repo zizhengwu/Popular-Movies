@@ -13,12 +13,10 @@ import org.junit.runner.RunWith;
 
 import java.io.IOException;
 
-import retrofit2.Call;
-import retrofit2.Response;
-import retrofit2.Retrofit;
+import rx.observers.TestSubscriber;
 
 import static android.support.test.InstrumentationRegistry.getInstrumentation;
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
 /**
  * Instrumentation test, which will execute on an Android device.
@@ -49,6 +47,10 @@ public class ExampleInstrumentedTest {
 
     @Test
     public void movieTrailerApi() {
-        Log.d("API", new Gson().toJson(ApiHelper.fetchMovieTrailers("127380", getInstrumentation().getTargetContext().getResources().getString(R.string.MovieDBApiKey))));
+        TestSubscriber<MovieTrailer[]> testSubscriber = new TestSubscriber<>();
+        ApiHelper.fetchMovieTrailers("127380", getInstrumentation().getTargetContext().getResources().getString(R.string.MovieDBApiKey))
+                .toBlocking()
+                .subscribe(testSubscriber);
+        testSubscriber.assertNoErrors();
     }
 }
