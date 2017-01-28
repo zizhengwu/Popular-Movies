@@ -6,6 +6,7 @@ import com.google.gson.JsonDeserializationContext;
 import com.google.gson.JsonDeserializer;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonParseException;
+import com.zizhengwu.popular_movies_stage_1.Model.MovieReview;
 import com.zizhengwu.popular_movies_stage_1.Model.MovieTrailer;
 
 import java.lang.reflect.Type;
@@ -28,6 +29,27 @@ public class ApiJsonConverter {
 
         // adding custom deserializers
         gsonBuilder.registerTypeAdapter(MovieTrailer[].class, new MovieTrailerDeserializer());
+        Gson myGson = gsonBuilder.create();
+
+        return GsonConverterFactory.create(myGson);
+
+    }
+
+    static class MovieReviewDeserializer implements JsonDeserializer<MovieReview[]> {
+
+        @Override
+        public MovieReview[] deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context) throws JsonParseException {
+            JsonElement content = json.getAsJsonObject().get("results");
+
+            return new Gson().fromJson(content, MovieReview[].class);
+        }
+    }
+
+    static GsonConverterFactory buildMovieReviewGsonConverter() {
+        GsonBuilder gsonBuilder = new GsonBuilder();
+
+        // adding custom deserializers
+        gsonBuilder.registerTypeAdapter(MovieReview[].class, new MovieReviewDeserializer());
         Gson myGson = gsonBuilder.create();
 
         return GsonConverterFactory.create(myGson);

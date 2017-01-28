@@ -1,5 +1,6 @@
 package com.zizhengwu.popular_movies_stage_1.Network;
 
+import com.zizhengwu.popular_movies_stage_1.Model.MovieReview;
 import com.zizhengwu.popular_movies_stage_1.Model.MovieTrailer;
 
 import retrofit2.Retrofit;
@@ -18,5 +19,17 @@ public class ApiHelper {
         MovieDBService service = retrofit.create(MovieDBService.class);
 
         return service.findTrailerByID(id, apiKey);
+    }
+
+    public static Observable<MovieReview[]> fetchMovieReviews(String id, String apiKey) {
+        Retrofit retrofit = new Retrofit.Builder()
+                .baseUrl("http://api.themoviedb.org/")
+                .addConverterFactory(ApiJsonConverter.buildMovieReviewGsonConverter())
+                .addCallAdapterFactory(RxJavaCallAdapterFactory.createWithScheduler(Schedulers.io()))
+                .build();
+
+        MovieDBService service = retrofit.create(MovieDBService.class);
+
+        return service.findReviewByID(id, apiKey);
     }
 }

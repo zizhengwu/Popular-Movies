@@ -6,6 +6,7 @@ import android.support.test.runner.AndroidJUnit4;
 import android.util.Log;
 
 import com.google.gson.Gson;
+import com.zizhengwu.popular_movies_stage_1.Model.MovieReview;
 import com.zizhengwu.popular_movies_stage_1.Model.MovieTrailer;
 import com.zizhengwu.popular_movies_stage_1.Network.ApiHelper;
 import com.zizhengwu.popular_movies_stage_1.Network.MovieDB;
@@ -55,5 +56,17 @@ public class ExampleInstrumentedTest {
                 .toBlocking()
                 .subscribe(testSubscriber);
         testSubscriber.assertNoErrors();
+    }
+
+    @Test
+    public void movieReviewApi() {
+        TestSubscriber<MovieReview[]> testSubscriber = new TestSubscriber<>();
+        ApiHelper.fetchMovieReviews("328111", getInstrumentation().getTargetContext().getResources().getString(R.string.MovieDBApiKey))
+                .toBlocking()
+                .subscribe(testSubscriber);
+        testSubscriber.assertNoErrors();
+
+        MovieReview[] reviews = testSubscriber.getOnNextEvents().get(0);
+        Log.d("API", new Gson().toJson(reviews));
     }
 }
