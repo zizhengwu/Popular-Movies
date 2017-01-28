@@ -1,4 +1,4 @@
-package com.zizhengwu.popular_movies_stage_1;
+package com.zizhengwu.popular_movies_stage_1.Network;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -6,12 +6,13 @@ import com.google.gson.JsonDeserializationContext;
 import com.google.gson.JsonDeserializer;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonParseException;
+import com.zizhengwu.popular_movies_stage_1.Model.MovieTrailer;
 
 import java.lang.reflect.Type;
 
 import retrofit2.converter.gson.GsonConverterFactory;
 
-public class ApiAdapter {
+public class ApiJsonConverter {
     static class MovieTrailerDeserializer implements JsonDeserializer<MovieTrailer[]> {
 
         @Override

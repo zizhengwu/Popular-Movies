@@ -1,4 +1,6 @@
-package com.zizhengwu.popular_movies_stage_1;
+package com.zizhengwu.popular_movies_stage_1.Network;
+
+import com.zizhengwu.popular_movies_stage_1.Model.MovieTrailer;
 
 import retrofit2.Retrofit;
 import retrofit2.adapter.rxjava.RxJavaCallAdapterFactory;
@@ -9,7 +11,7 @@ public class ApiHelper {
     public static Observable<MovieTrailer[]> fetchMovieTrailers(String id, String apiKey) {
         Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl("http://api.themoviedb.org/")
-                .addConverterFactory(ApiAdapter.buildMovieTrailerGsonConverter())
+                .addConverterFactory(ApiJsonConverter.buildMovieTrailerGsonConverter())
                 .addCallAdapterFactory(RxJavaCallAdapterFactory.createWithScheduler(Schedulers.io()))
                 .build();
 

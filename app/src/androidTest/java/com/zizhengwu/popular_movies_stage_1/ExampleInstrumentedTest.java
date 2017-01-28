@@ -6,6 +6,9 @@ import android.support.test.runner.AndroidJUnit4;
 import android.util.Log;
 
 import com.google.gson.Gson;
+import com.zizhengwu.popular_movies_stage_1.Model.MovieTrailer;
+import com.zizhengwu.popular_movies_stage_1.Network.ApiHelper;
+import com.zizhengwu.popular_movies_stage_1.Network.MovieDB;
 
 import org.json.JSONException;
 import org.junit.Test;

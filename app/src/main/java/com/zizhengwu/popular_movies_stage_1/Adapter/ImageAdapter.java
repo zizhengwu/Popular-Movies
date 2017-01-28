@@ -1,4 +1,4 @@
-package com.zizhengwu.popular_movies_stage_1;
+package com.zizhengwu.popular_movies_stage_1.Adapter;
 
 import android.content.Context;
 import android.view.View;
@@ -8,9 +8,8 @@ import android.widget.GridView;
 import android.widget.ImageView;
 
 import com.squareup.picasso.Picasso;
-
-import java.util.ArrayList;
-import java.util.List;
+import com.zizhengwu.popular_movies_stage_1.Model.Movie;
+import com.zizhengwu.popular_movies_stage_1.R;
 
 public class ImageAdapter extends BaseAdapter {
     private Context mContext;
@@ -58,7 +57,7 @@ public class ImageAdapter extends BaseAdapter {
             imageView = (ImageView) convertView;
         }
 
-        Picasso.with(mContext).load("http://image.tmdb.org/t/p/w185/" + movies[position].poster_path).into(imageView);
+        Picasso.with(mContext).load("http://image.tmdb.org/t/p/w185/" + movies[position].getPoster_path()).into(imageView);
         return imageView;
     }
 

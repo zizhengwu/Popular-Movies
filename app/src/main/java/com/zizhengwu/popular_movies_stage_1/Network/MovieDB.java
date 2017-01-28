@@ -1,10 +1,12 @@
-package com.zizhengwu.popular_movies_stage_1;
+package com.zizhengwu.popular_movies_stage_1.Network;
 
-import android.content.res.Resources;
 import android.util.Log;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
+import com.zizhengwu.popular_movies_stage_1.Model.Movie;
+import com.zizhengwu.popular_movies_stage_1.R;
+import com.zizhengwu.popular_movies_stage_1.Singleton;
 
 import org.json.JSONException;
 
@@ -45,7 +47,7 @@ public class MovieDB {
         try {
             response = new MovieDB().run("http://api.themoviedb.org/3/movie/" + type + "?api_key=" + Singleton.getInstance().getContext().getResources().getString(R.string.MovieDBApiKey));
         } catch (IOException e) {
-            Log.d("Network", "no network!");
+            Log.d("com/zizhengwu/popular_movies_stage_1/Network", "no network!");
         }
         Gson gson = new Gson();
         Map<String, Object> map = gson.fromJson(response, new TypeToken<Map<String, Object>>(){}.getType());

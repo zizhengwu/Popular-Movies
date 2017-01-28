@@ -4,12 +4,11 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
-import android.widget.ImageView;
-import android.widget.TextView;
 
-import com.google.gson.Gson;
-import com.squareup.picasso.Picasso;
+import com.zizhengwu.popular_movies_stage_1.Adapter.DetailAdapter;
+import com.zizhengwu.popular_movies_stage_1.Model.Movie;
+import com.zizhengwu.popular_movies_stage_1.Model.MovieTrailer;
+import com.zizhengwu.popular_movies_stage_1.Network.ApiHelper;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -30,12 +29,12 @@ public class MovieDetailActivity extends AppCompatActivity {
     void setUpViews() {
         RecyclerView rvTrailers = (RecyclerView) findViewById(R.id.recycle_view_trailers);
 
-        final TrailersAdapter trailersAdapter = new TrailersAdapter(this, movie, new ArrayList<MovieTrailer>(0));
+        final DetailAdapter trailersAdapter = new DetailAdapter(this, movie, new ArrayList<MovieTrailer>(0));
         rvTrailers.setLayoutManager(new LinearLayoutManager(this));
         rvTrailers.setAdapter(trailersAdapter);
 
 
-        ApiHelper.fetchMovieTrailers(movie.id, getResources().getString(R.string.MovieDBApiKey))
+        ApiHelper.fetchMovieTrailers(movie.getId(), getResources().getString(R.string.MovieDBApiKey))
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Subscriber<MovieTrailer[]>() {
                     @Override

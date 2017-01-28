@@ -1,4 +1,4 @@
-package com.zizhengwu.popular_movies_stage_1;
+package com.zizhengwu.popular_movies_stage_1.Model;
 
 import android.os.Parcel;
 import android.os.Parcelable;
@@ -45,5 +45,29 @@ public class Movie implements Parcelable {
         dest.writeString(vote_average);
         dest.writeString(poster_path);
         dest.writeString(release_date);
+    }
+
+    public String getOverview() {
+        return overview;
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public String getVote_average() {
+        return vote_average;
+    }
+
+    public String getPoster_path() {
+        return poster_path;
+    }
+
+    public String getRelease_date() {
+        return release_date;
     }
 }

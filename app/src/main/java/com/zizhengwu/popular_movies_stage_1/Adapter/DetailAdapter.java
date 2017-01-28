@@ -1,4 +1,4 @@
-package com.zizhengwu.popular_movies_stage_1;
+package com.zizhengwu.popular_movies_stage_1.Adapter;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
@@ -9,10 +9,13 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.squareup.picasso.Picasso;
+import com.zizhengwu.popular_movies_stage_1.Model.Movie;
+import com.zizhengwu.popular_movies_stage_1.Model.MovieTrailer;
+import com.zizhengwu.popular_movies_stage_1.R;
 
 import java.util.List;
 
-public class TrailersAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
+public class DetailAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     public void setMovieTrailers(List<MovieTrailer> movieTrailers) {
         this.movieTrailers = movieTrailers;
         notifyDataSetChanged();
@@ -68,7 +71,7 @@ public class TrailersAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
     }
 
 
-    public TrailersAdapter(Context context, Movie movie, List<MovieTrailer> movieTrailers) {
+    public DetailAdapter(Context context, Movie movie, List<MovieTrailer> movieTrailers) {
         this.context = context;
         this.movie = movie;
         this.movieTrailers = movieTrailers;
@@ -110,11 +113,11 @@ public class TrailersAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
         if (holder instanceof HeaderViewHolder) {
             HeaderViewHolder headerViewHolder = (HeaderViewHolder) holder;
 
-            headerViewHolder.title.setText(movie.title);
-            headerViewHolder.release_date.setText(movie.release_date);
-            headerViewHolder.overview.setText(movie.overview);
-            headerViewHolder.vote_average.setText(movie.vote_average);
-            Picasso.with(context).load("http://image.tmdb.org/t/p/w185/"+movie.poster_path).into(headerViewHolder.poster);
+            headerViewHolder.title.setText(movie.getTitle());
+            headerViewHolder.release_date.setText(movie.getRelease_date());
+            headerViewHolder.overview.setText(movie.getOverview());
+            headerViewHolder.vote_average.setText(movie.getVote_average());
+            Picasso.with(context).load("http://image.tmdb.org/t/p/w185/"+movie.getPoster_path()).into(headerViewHolder.poster);
         }
         else if (holder instanceof TrailerItemViewHolder) {
             TrailerItemViewHolder trailerViewHolder = (TrailerItemViewHolder) holder;

@@ -1,7 +1,6 @@
 package com.zizhengwu.popular_movies_stage_1;
 
 import android.content.Intent;
-import android.os.Parcelable;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.Menu;
@@ -11,6 +10,11 @@ import android.widget.AdapterView;
 import android.widget.GridView;
 import android.widget.Toast;
 
+import com.zizhengwu.popular_movies_stage_1.Adapter.ImageAdapter;
+import com.zizhengwu.popular_movies_stage_1.Model.Movie;
+import com.zizhengwu.popular_movies_stage_1.Model.SortBy;
+import com.zizhengwu.popular_movies_stage_1.Network.MovieDB;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -19,7 +23,6 @@ import java.util.concurrent.Callable;
 import rx.Observable;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.functions.Action1;
-import rx.functions.Func0;
 import rx.functions.Func1;
 import rx.schedulers.Schedulers;
 import rx.subjects.PublishSubject;
