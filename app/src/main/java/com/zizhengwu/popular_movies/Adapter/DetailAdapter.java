@@ -1,10 +1,13 @@
 package com.zizhengwu.popular_movies.Adapter;
 
 import android.content.Context;
+import android.content.Intent;
+import android.net.Uri;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -40,13 +43,8 @@ public class DetailAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
         public int getValue() {
             return value;
         }
-    };
-
-    private Context context;
-
-    private Context getContext() {
-        return context;
     }
+    private Context context;
 
     class HeaderViewHolder extends RecyclerView.ViewHolder {
         TextView title;
@@ -69,11 +67,13 @@ public class DetailAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
 
     class TrailerItemViewHolder extends RecyclerView.ViewHolder {
         TextView trailerNameTextView;
+        Button trailerPlayButtonView;
 
         public TrailerItemViewHolder(View itemView) {
             super(itemView);
 
             trailerNameTextView = (TextView) itemView.findViewById(R.id.trailer_name);
+            trailerPlayButtonView = (Button) itemView.findViewById(R.id.trailer_play);
         }
     }
 
@@ -152,8 +152,16 @@ public class DetailAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
         }
         else if (holder instanceof TrailerItemViewHolder) {
             TrailerItemViewHolder trailerItemViewHolder = (TrailerItemViewHolder) holder;
-            MovieTrailer movieTrailer = getTrailer(position);
+            final MovieTrailer movieTrailer = getTrailer(position);
             trailerItemViewHolder.trailerNameTextView.setText(movieTrailer.getName());
+            trailerItemViewHolder.trailerPlayButtonView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Intent i = new Intent(Intent.ACTION_VIEW);
+                    i.setData(Uri.parse("https://www.youtube.com/watch?v=" + movieTrailer.getKey()));
+                    context.startActivity(i);
+                }
+            });
         }
         else if (holder instanceof  ReviewItemViewHolder) {
             ReviewItemViewHolder reviewItemViewHolder = (ReviewItemViewHolder) holder;

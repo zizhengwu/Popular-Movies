@@ -3,10 +3,19 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_height="wrap_content"
+    android:orientation="horizontal" >
+
+    <Button
+        android:id="@+id/trailer_play"
+        android:layout_width="0dp"
+        android:layout_weight="1"
+        android:text="play"
+        android:layout_height="wrap_content" />
 
     <TextView
         android:id="@+id/trailer_name"
-        android:layout_width="match_parent"
+        android:layout_width="0dp"
+        android:layout_weight="3"
         android:layout_height="wrap_content" />
 </LinearLayout>
