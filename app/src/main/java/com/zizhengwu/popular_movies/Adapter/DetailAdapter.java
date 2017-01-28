@@ -10,6 +10,7 @@ import android.widget.TextView;
 
 import com.squareup.picasso.Picasso;
 import com.zizhengwu.popular_movies.Model.Movie;
+import com.zizhengwu.popular_movies.Model.MovieReview;
 import com.zizhengwu.popular_movies.Model.MovieTrailer;
 import com.zizhengwu.popular_movies.R;
 
@@ -21,10 +22,16 @@ public class DetailAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
         notifyDataSetChanged();
     }
 
+    public void setMovieReviews(List<MovieReview> movieReviews) {
+        this.movieReviews = movieReviews;
+        notifyDataSetChanged();
+    }
+
     private List<MovieTrailer> movieTrailers;
+    private List<MovieReview> movieReviews;
     private Movie movie;
     private enum Type {
-        HEADER(0), ITEM(1);
+        HEADER(0), TRAILER(1), REVIEW(2);
         private final int value;
         Type(int value) {
             this.value = value;
@@ -70,11 +77,23 @@ public class DetailAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
         }
     }
 
+    class ReviewItemViewHolder extends RecyclerView.ViewHolder {
+        TextView reviewAuthorTextView;
+        TextView reviewContentTextView;
 
-    public DetailAdapter(Context context, Movie movie, List<MovieTrailer> movieTrailers) {
+        public ReviewItemViewHolder(View itemView) {
+            super(itemView);
+
+            reviewAuthorTextView = (TextView) itemView.findViewById(R.id.review_author);
+            reviewContentTextView = (TextView) itemView.findViewById(R.id.review_content);
+        }
+    }
+
+    public DetailAdapter(Context context, Movie movie, List<MovieTrailer> movieTrailers, List<MovieReview> movieReviews) {
         this.context = context;
         this.movie = movie;
         this.movieTrailers = movieTrailers;
+        this.movieReviews = movieReviews;
     }
 
     @Override
@@ -82,8 +101,11 @@ public class DetailAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
         if (position == 0) {
             return Type.HEADER.getValue();
         }
+        else if (position <= movieTrailers.size()) {
+            return Type.TRAILER.getValue();
+        }
         else {
-            return Type.ITEM.getValue();
+            return Type.REVIEW.getValue();
         }
     }
 
@@ -97,15 +119,24 @@ public class DetailAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
 
             return new HeaderViewHolder(headerView);
         }
-        else {
-            View trailersView = inflater.inflate(R.layout.item_trailer, parent, false);
+        else if (viewType == Type.TRAILER.getValue()) {
+            View trailerView = inflater.inflate(R.layout.item_trailer, parent, false);
 
-            return new TrailerItemViewHolder(trailersView);
+            return new TrailerItemViewHolder(trailerView);
+        }
+        else {
+            View reviewView = inflater.inflate(R.layout.item_review, parent, false);
+
+            return new ReviewItemViewHolder(reviewView);
         }
     }
 
-    private MovieTrailer getItem(int position) {
+    private MovieTrailer getTrailer(int position) {
         return movieTrailers.get(position-1);
+    }
+
+    private MovieReview getReview(int position) {
+        return movieReviews.get(position-1-movieTrailers.size());
     }
 
     @Override
@@ -120,9 +151,15 @@ public class DetailAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
             Picasso.with(context).load("http://image.tmdb.org/t/p/w185/"+movie.getPoster_path()).into(headerViewHolder.poster);
         }
         else if (holder instanceof TrailerItemViewHolder) {
-            TrailerItemViewHolder trailerViewHolder = (TrailerItemViewHolder) holder;
-            MovieTrailer movieTrailer = getItem(position);
-            trailerViewHolder.trailerNameTextView.setText(movieTrailer.getName());
+            TrailerItemViewHolder trailerItemViewHolder = (TrailerItemViewHolder) holder;
+            MovieTrailer movieTrailer = getTrailer(position);
+            trailerItemViewHolder.trailerNameTextView.setText(movieTrailer.getName());
+        }
+        else if (holder instanceof  ReviewItemViewHolder) {
+            ReviewItemViewHolder reviewItemViewHolder = (ReviewItemViewHolder) holder;
+            MovieReview movieReview = getReview(position);
+            reviewItemViewHolder.reviewAuthorTextView.setText(movieReview.getAuthor());
+            reviewItemViewHolder.reviewContentTextView.setText(movieReview.getContent());
         }
         else {
             throw new UnsupportedOperationException();
@@ -132,6 +169,6 @@ public class DetailAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
 
     @Override
     public int getItemCount() {
-        return movieTrailers.size() + 1;
+        return 1 + movieTrailers.size() + movieReviews.size();
     }
 }

@@ -7,6 +7,7 @@ import android.support.v7.widget.RecyclerView;
 
 import com.zizhengwu.popular_movies.Adapter.DetailAdapter;
 import com.zizhengwu.popular_movies.Model.Movie;
+import com.zizhengwu.popular_movies.Model.MovieReview;
 import com.zizhengwu.popular_movies.Model.MovieTrailer;
 import com.zizhengwu.popular_movies.Network.ApiHelper;
 
@@ -29,9 +30,9 @@ public class MovieDetailActivity extends AppCompatActivity {
     void setUpViews() {
         RecyclerView rvTrailers = (RecyclerView) findViewById(R.id.recycle_view_trailers);
 
-        final DetailAdapter trailersAdapter = new DetailAdapter(this, movie, new ArrayList<MovieTrailer>(0));
+        final DetailAdapter detailAdapter = new DetailAdapter(this, movie, new ArrayList<MovieTrailer>(0), new ArrayList<MovieReview>(0));
         rvTrailers.setLayoutManager(new LinearLayoutManager(this));
-        rvTrailers.setAdapter(trailersAdapter);
+        rvTrailers.setAdapter(detailAdapter);
 
 
         ApiHelper.fetchMovieTrailers(movie.getId(), getResources().getString(R.string.MovieDBApiKey))
@@ -49,7 +50,26 @@ public class MovieDetailActivity extends AppCompatActivity {
 
                     @Override
                     public void onNext(MovieTrailer[] movieTrailers) {
-                        trailersAdapter.setMovieTrailers(new ArrayList<MovieTrailer>(Arrays.asList(movieTrailers)));
+                        detailAdapter.setMovieTrailers(new ArrayList<MovieTrailer>(Arrays.asList(movieTrailers)));
+                    }
+                });
+
+        ApiHelper.fetchMovieReviews(movie.getId(), getResources().getString(R.string.MovieDBApiKey))
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Subscriber<MovieReview[]>() {
+                    @Override
+                    public void onCompleted() {
+
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+
+                    }
+
+                    @Override
+                    public void onNext(MovieReview[] movieReviews) {
+                        detailAdapter.setMovieReviews(new ArrayList<MovieReview>(Arrays.asList(movieReviews)));
                     }
                 });
     }
