@@ -1,4 +1,4 @@
-package com.zizhengwu.popular_movies_stage_1.Model;
+package com.zizhengwu.popular_movies.Model;
 
 public class MovieTrailer {
     private String id;

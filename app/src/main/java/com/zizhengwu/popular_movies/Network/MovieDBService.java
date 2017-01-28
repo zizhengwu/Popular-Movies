@@ -1,7 +1,7 @@
-package com.zizhengwu.popular_movies_stage_1.Network;
+package com.zizhengwu.popular_movies.Network;
 
-import com.zizhengwu.popular_movies_stage_1.Model.MovieReview;
-import com.zizhengwu.popular_movies_stage_1.Model.MovieTrailer;
+import com.zizhengwu.popular_movies.Model.MovieReview;
+import com.zizhengwu.popular_movies.Model.MovieTrailer;
 
 import retrofit2.http.GET;
 import retrofit2.http.Path;

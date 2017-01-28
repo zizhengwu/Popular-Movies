@@ -1,4 +1,4 @@
-package com.zizhengwu.popular_movies_stage_1.Network;
+package com.zizhengwu.popular_movies.Network;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -6,8 +6,8 @@ import com.google.gson.JsonDeserializationContext;
 import com.google.gson.JsonDeserializer;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonParseException;
-import com.zizhengwu.popular_movies_stage_1.Model.MovieReview;
-import com.zizhengwu.popular_movies_stage_1.Model.MovieTrailer;
+import com.zizhengwu.popular_movies.Model.MovieReview;
+import com.zizhengwu.popular_movies.Model.MovieTrailer;
 
 import java.lang.reflect.Type;
 

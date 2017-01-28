@@ -1,14 +1,14 @@
-package com.zizhengwu.popular_movies_stage_1;
+package com.zizhengwu.popular_movies;
 
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 
-import com.zizhengwu.popular_movies_stage_1.Adapter.DetailAdapter;
-import com.zizhengwu.popular_movies_stage_1.Model.Movie;
-import com.zizhengwu.popular_movies_stage_1.Model.MovieTrailer;
-import com.zizhengwu.popular_movies_stage_1.Network.ApiHelper;
+import com.zizhengwu.popular_movies.Adapter.DetailAdapter;
+import com.zizhengwu.popular_movies.Model.Movie;
+import com.zizhengwu.popular_movies.Model.MovieTrailer;
+import com.zizhengwu.popular_movies.Network.ApiHelper;
 
 import java.util.ArrayList;
 import java.util.Arrays;

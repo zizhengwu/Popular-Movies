@@ -1,12 +1,12 @@
-package com.zizhengwu.popular_movies_stage_1.Network;
+package com.zizhengwu.popular_movies.Network;
 
 import android.util.Log;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
-import com.zizhengwu.popular_movies_stage_1.Model.Movie;
-import com.zizhengwu.popular_movies_stage_1.R;
-import com.zizhengwu.popular_movies_stage_1.Singleton;
+import com.zizhengwu.popular_movies.Model.Movie;
+import com.zizhengwu.popular_movies.R;
+import com.zizhengwu.popular_movies.Singleton;
 
 import org.json.JSONException;
 

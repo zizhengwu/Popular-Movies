@@ -1,4 +1,4 @@
-package com.zizhengwu.popular_movies_stage_1;
+package com.zizhengwu.popular_movies;
 
 import android.content.Context;
 import android.support.test.InstrumentationRegistry;
@@ -6,10 +6,10 @@ import android.support.test.runner.AndroidJUnit4;
 import android.util.Log;
 
 import com.google.gson.Gson;
-import com.zizhengwu.popular_movies_stage_1.Model.MovieReview;
-import com.zizhengwu.popular_movies_stage_1.Model.MovieTrailer;
-import com.zizhengwu.popular_movies_stage_1.Network.ApiHelper;
-import com.zizhengwu.popular_movies_stage_1.Network.MovieDB;
+import com.zizhengwu.popular_movies.Model.MovieReview;
+import com.zizhengwu.popular_movies.Model.MovieTrailer;
+import com.zizhengwu.popular_movies.Network.ApiHelper;
+import com.zizhengwu.popular_movies.Network.MovieDB;
 
 import org.json.JSONException;
 import org.junit.Test;

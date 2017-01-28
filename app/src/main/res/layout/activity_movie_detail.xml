@@ -5,7 +5,7 @@
     android:id="@+id/activity_movie_detail"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.zizhengwu.popular_movies_stage_1.MovieDetailActivity">
+    tools:context="com.zizhengwu.popular_movies.MovieDetailActivity">
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/recycle_view_trailers"

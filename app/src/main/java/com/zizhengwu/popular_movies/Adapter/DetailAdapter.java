@@ -1,4 +1,4 @@
-package com.zizhengwu.popular_movies_stage_1.Adapter;
+package com.zizhengwu.popular_movies.Adapter;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
@@ -9,9 +9,9 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.squareup.picasso.Picasso;
-import com.zizhengwu.popular_movies_stage_1.Model.Movie;
-import com.zizhengwu.popular_movies_stage_1.Model.MovieTrailer;
-import com.zizhengwu.popular_movies_stage_1.R;
+import com.zizhengwu.popular_movies.Model.Movie;
+import com.zizhengwu.popular_movies.Model.MovieTrailer;
+import com.zizhengwu.popular_movies.R;
 
 import java.util.List;
 

@@ -4,7 +4,7 @@ android {
     compileSdkVersion 25
     buildToolsVersion "25.0.2"
     defaultConfig {
-        applicationId "com.zizhengwu.popular_movies_stage_1"
+        applicationId "com.zizhengwu.popular_movies"
         minSdkVersion 19
         targetSdkVersion 25
         versionCode 1

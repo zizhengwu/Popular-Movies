@@ -1,4 +1,4 @@
-package com.zizhengwu.popular_movies_stage_1.Adapter;
+package com.zizhengwu.popular_movies.Adapter;
 
 import android.content.Context;
 import android.view.View;
@@ -8,8 +8,8 @@ import android.widget.GridView;
 import android.widget.ImageView;
 
 import com.squareup.picasso.Picasso;
-import com.zizhengwu.popular_movies_stage_1.Model.Movie;
-import com.zizhengwu.popular_movies_stage_1.R;
+import com.zizhengwu.popular_movies.Model.Movie;
+import com.zizhengwu.popular_movies.R;
 
 public class ImageAdapter extends BaseAdapter {
     private Context mContext;
