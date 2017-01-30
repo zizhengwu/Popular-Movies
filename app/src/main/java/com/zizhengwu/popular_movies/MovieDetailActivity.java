@@ -35,7 +35,7 @@ public class MovieDetailActivity extends AppCompatActivity {
         rvTrailers.setAdapter(detailAdapter);
 
 
-        ApiHelper.fetchMovieTrailers(movie.getId(), getResources().getString(R.string.MovieDBApiKey))
+        ApiHelper.fetchMovieTrailers(String.valueOf(movie.getId()), getResources().getString(R.string.MovieDBApiKey))
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Subscriber<MovieTrailer[]>() {
                     @Override
@@ -54,7 +54,7 @@ public class MovieDetailActivity extends AppCompatActivity {
                     }
                 });
 
-        ApiHelper.fetchMovieReviews(movie.getId(), getResources().getString(R.string.MovieDBApiKey))
+        ApiHelper.fetchMovieReviews(String.valueOf(movie.getId()), getResources().getString(R.string.MovieDBApiKey))
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Subscriber<MovieReview[]>() {
                     @Override
