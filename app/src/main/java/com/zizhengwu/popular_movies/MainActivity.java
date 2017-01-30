@@ -45,7 +45,6 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         setUpGridView(savedInstanceState);
         setUpObservables();
-        changeSortMetric(SortBy.POPULAR);
     }
 
     @Override
@@ -56,17 +55,17 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        int itemThatWasClickedId = item.getItemId();
-        if (itemThatWasClickedId == R.id.action_sort) {
-            switch (sortBy) {
-                case POPULAR:
-                    changeSortMetric(SortBy.TOP_RATED);
-                    break;
-                case TOP_RATED:
-                    changeSortMetric(SortBy.POPULAR);
-                    break;
-            }
-            return true;
+        switch (item.getItemId()) {
+            case R.id.action_sort_popular:
+                changeSortMetric(SortBy.POPULAR);
+                break;
+            case R.id.action_sort_top_rated:
+                changeSortMetric(SortBy.TOP_RATED);
+                break;
+            case R.id.action_sort_favourite:
+                break;
+            default:
+                throw new UnsupportedOperationException();
         }
         return super.onOptionsItemSelected(item);
     }

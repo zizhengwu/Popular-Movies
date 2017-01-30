@@ -2,8 +2,16 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <item
-        android:id="@+id/action_sort"
-        android:orderInCategory="1"
-        app:showAsAction="ifRoom"
-        android:title="@string/sort"/>
+        android:id="@+id/action_sort_popular"
+        android:title="@string/sort_popular"
+        app:showAsAction="never"/>
+    <item
+        android:id="@+id/action_sort_top_rated"
+        android:title="@string/sort_top_rated"
+        app:showAsAction="never"/>
+    <item
+        android:id="@+id/action_sort_favourite"
+        android:title="@string/sort_favourite"
+        app:showAsAction="never"/>
+
 </menu>
