@@ -97,8 +97,10 @@ public class MovieProvider extends ContentProvider {
     }
 
     @Override
-    public int delete(Uri uri, String s, String[] strings) {
-        throw new UnsupportedOperationException("Not yet implemented");
+    public int delete(Uri uri, String selection, String[] selectionArgs) {
+        int rowsDeleted = dbHelper.getWritableDatabase().delete(MovieContract.MovieEntry.TABLE_NAME, selection, selectionArgs);
+        getContext().getContentResolver().notifyChange(uri, null);
+        return rowsDeleted;
     }
 
     @Override

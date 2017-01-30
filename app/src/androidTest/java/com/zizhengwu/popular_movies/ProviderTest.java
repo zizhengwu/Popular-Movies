@@ -12,6 +12,8 @@ import android.util.Log;
 import com.zizhengwu.popular_movies.Data.DatabaseHelper;
 import com.zizhengwu.popular_movies.Data.MovieContract;
 
+import junit.framework.Assert;
+
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -28,20 +30,51 @@ public class ProviderTest {
 
     @Test
     public void insertAndQuery() {
-        ContentValues contentValues = new ContentValues();
-        contentValues.put(MovieContract.MovieEntry.COLUMN_ID, 328111);
-        contentValues.put(MovieContract.MovieEntry.COLUMN_NAME, "The Secret Life of Pets");
-        Log.d("DATA", mContext.getContentResolver().insert(MovieContract.MovieEntry.CONTENT_URI, contentValues).toString());
-
-        ContentValues contentValues1 = new ContentValues();
-        contentValues1.put(MovieContract.MovieEntry.COLUMN_ID, 297761);
-        contentValues1.put(MovieContract.MovieEntry.COLUMN_NAME, "Suicide Squad");
-        Log.d("DATA", mContext.getContentResolver().insert(MovieContract.MovieEntry.CONTENT_URI, contentValues1).toString());
-
-        Cursor movieCursor = mContext.getContentResolver().query(MovieContract.MovieEntry.CONTENT_URI, null, null, null, null);
-        while (movieCursor.moveToNext()) {
-            Log.d("DATA", String.format("Movie id: %d, %s", movieCursor.getInt(movieCursor.getColumnIndex(MovieContract.MovieEntry.COLUMN_ID)), movieCursor.getString(movieCursor.getColumnIndex(MovieContract.MovieEntry.COLUMN_NAME))));
+        {
+            ContentValues contentValues = new ContentValues();
+            contentValues.put(MovieContract.MovieEntry.COLUMN_ID, 328111);
+            contentValues.put(MovieContract.MovieEntry.COLUMN_NAME, "The Secret Life of Pets");
+            Log.d("DATA", mContext.getContentResolver().insert(MovieContract.MovieEntry.CONTENT_URI, contentValues).toString());
         }
+
+        {
+            ContentValues contentValues = new ContentValues();
+            contentValues.put(MovieContract.MovieEntry.COLUMN_ID, 297761);
+            contentValues.put(MovieContract.MovieEntry.COLUMN_NAME, "Suicide Squad");
+            Log.d("DATA", mContext.getContentResolver().insert(MovieContract.MovieEntry.CONTENT_URI, contentValues).toString());
+        }
+
+        {
+            String selectionClause = MovieContract.MovieEntry.COLUMN_ID + " = ?";
+            String [] selectionArgs = new String[] {"328111"};
+            Cursor movieCursor = mContext.getContentResolver().query(MovieContract.MovieEntry.CONTENT_URI, null, selectionClause, selectionArgs, null);
+            Assert.assertEquals(movieCursor.getCount(), 1);
+            while (movieCursor.moveToNext()) {
+                Log.d("DATA", String.format("Select Movie id: %d, %s", movieCursor.getInt(movieCursor.getColumnIndex(MovieContract.MovieEntry.COLUMN_ID)), movieCursor.getString(movieCursor.getColumnIndex(MovieContract.MovieEntry.COLUMN_NAME))));
+            }
+        }
+
+        {
+            String selectionClause = MovieContract.MovieEntry.COLUMN_ID + " = ?";
+            String [] selectionArgs = new String[] {"328111"};
+            mContext.getContentResolver().delete(MovieContract.MovieEntry.CONTENT_URI, selectionClause, selectionArgs);
+        }
+
+        {
+            String selectionClause = MovieContract.MovieEntry.COLUMN_ID + " = ?";
+            String [] selectionArgs = new String[] {"328111"};
+            Cursor movieCursor = mContext.getContentResolver().query(MovieContract.MovieEntry.CONTENT_URI, null, selectionClause, selectionArgs, null);
+            Assert.assertEquals(movieCursor.getCount(), 0);
+        }
+
+        {
+            Cursor movieCursor = mContext.getContentResolver().query(MovieContract.MovieEntry.CONTENT_URI, null, null, null, null);
+            while (movieCursor.moveToNext()) {
+                Log.d("DATA", String.format("Movie id: %d, %s", movieCursor.getInt(movieCursor.getColumnIndex(MovieContract.MovieEntry.COLUMN_ID)), movieCursor.getString(movieCursor.getColumnIndex(MovieContract.MovieEntry.COLUMN_NAME))));
+            }
+        }
+
+
 
     }
 }
