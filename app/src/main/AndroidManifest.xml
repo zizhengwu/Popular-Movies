@@ -19,6 +19,10 @@
             </intent-filter>
         </activity>
         <activity android:name="com.zizhengwu.popular_movies.MovieDetailActivity"></activity>
+
+        <provider
+            android:authorities="com.zizhengwu.popular_movies"
+            android:name=".Data.MovieProvider"/>
     </application>
 
 </manifest>
