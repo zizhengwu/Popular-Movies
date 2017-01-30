@@ -47,8 +47,8 @@ public class MainActivity extends AppCompatActivity {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        setUpGridView(savedInstanceState);
         setUpObservables();
+        setUpGridView(savedInstanceState);
     }
 
     @Override
@@ -84,13 +84,16 @@ public class MainActivity extends AppCompatActivity {
     void setUpGridView(Bundle savedInstanceState) {
         GridView gridview = (GridView) findViewById(R.id.gridview);
         imageAdapter = new ImageAdapter(this);
+        gridview.setAdapter(imageAdapter);
 
         if (savedInstanceState != null) {
             List<Movie> items = savedInstanceState.getParcelableArrayList("movie");
             Movie[] movies = items.toArray(new Movie[items.size()]);
             imageAdapter.loadData(movies);
         }
-        gridview.setAdapter(imageAdapter);
+        else {
+            changeSortMetric(SortBy.POPULAR);
+        }
 
         gridview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             public void onItemClick(AdapterView<?> parent, View v,
