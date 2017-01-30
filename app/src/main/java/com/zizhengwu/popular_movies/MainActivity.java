@@ -1,8 +1,10 @@
 package com.zizhengwu.popular_movies;
 
 import android.content.Intent;
+import android.database.Cursor;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -11,12 +13,14 @@ import android.widget.GridView;
 import android.widget.Toast;
 
 import com.zizhengwu.popular_movies.Adapter.ImageAdapter;
+import com.zizhengwu.popular_movies.Data.MovieContract;
 import com.zizhengwu.popular_movies.Model.Movie;
 import com.zizhengwu.popular_movies.Model.SortBy;
 import com.zizhengwu.popular_movies.Network.MovieDB;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.concurrent.Callable;
 
@@ -63,6 +67,7 @@ public class MainActivity extends AppCompatActivity {
                 changeSortMetric(SortBy.TOP_RATED);
                 break;
             case R.id.action_sort_favourite:
+                changeSortMetric(SortBy.FAVOURITE);
                 break;
             default:
                 throw new UnsupportedOperationException();
@@ -119,6 +124,19 @@ public class MainActivity extends AppCompatActivity {
                             }
                         }).subscribeOn(Schedulers.io());
                         // lambda one-liner return Observable.fromCallable(() -> MovieDB.getTopRated()).subscribeOn(Schedulers.io());
+                    case FAVOURITE:
+                        return Observable.fromCallable(new Callable<Movie[]>() {
+                            @Override
+                            public Movie[] call() throws Exception {
+                                List<Movie> movies = new LinkedList<Movie>();
+                                Cursor movieCursor = getContentResolver().query(MovieContract.MovieEntry.CONTENT_URI, null, null, null, null);
+                                while (movieCursor.moveToNext()) {
+                                    Movie movie = new Movie("", movieCursor.getInt(movieCursor.getColumnIndex(MovieContract.MovieEntry.COLUMN_ID)), movieCursor.getString(movieCursor.getColumnIndex(MovieContract.MovieEntry.COLUMN_NAME)), "", "", "");
+                                    movies.add(movie);
+                                }
+                                return movies.toArray(new Movie[movies.size()]);
+                            }
+                        });
                     default:
                         throw new UnsupportedOperationException();
                 }

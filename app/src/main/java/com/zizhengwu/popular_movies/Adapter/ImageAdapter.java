@@ -57,7 +57,7 @@ public class ImageAdapter extends BaseAdapter {
             imageView = (ImageView) convertView;
         }
 
-        Picasso.with(mContext).load("http://image.tmdb.org/t/p/w185/" + movies[position].getPoster_path()).into(imageView);
+        Picasso.with(mContext).load("http://image.tmdb.org/t/p/w185/" + movies[position].getPoster_path()).placeholder(R.mipmap.ic_launcher).error(R.mipmap.ic_launcher).into(imageView);
         return imageView;
     }
 
