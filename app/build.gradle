@@ -41,6 +41,7 @@ dependencies {
     compile 'com.squareup.retrofit2:converter-gson:2.1.0'
     compile 'com.android.support:support-compat:25.1.0'
     compile 'com.android.support:recyclerview-v7:25.1.0'
+    compile 'com.facebook.stetho:stetho-okhttp3:1.4.2'
 }
 
 repositories {
