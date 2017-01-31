@@ -1,25 +1,17 @@
 package com.zizhengwu.popular_movies;
 
-import android.content.Intent;
 import android.database.Cursor;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
-import android.widget.AdapterView;
-import android.widget.GridView;
 import android.widget.Toast;
 
-import com.zizhengwu.popular_movies.Adapter.ImageAdapter;
 import com.zizhengwu.popular_movies.Data.MovieContract;
 import com.zizhengwu.popular_movies.Model.Movie;
 import com.zizhengwu.popular_movies.Model.SortBy;
 import com.zizhengwu.popular_movies.Network.MovieDB;
 
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.concurrent.Callable;
@@ -33,9 +25,9 @@ import rx.subjects.PublishSubject;
 import rx.subjects.Subject;
 
 public class MainActivity extends AppCompatActivity {
-    private ImageAdapter imageAdapter;
     private SortBy sortBy;
     private Subject<SortBy, SortBy> sortObservable = PublishSubject.create();
+    private GridFragment mGridFragment;
 
     private void changeSortMetric(SortBy sortBy) {
         this.sortBy = sortBy;
@@ -47,8 +39,8 @@ public class MainActivity extends AppCompatActivity {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        mGridFragment = (GridFragment) getSupportFragmentManager().findFragmentById(R.id.fragment_grid);
         setUpObservables();
-        setUpGridView(savedInstanceState);
     }
 
     @Override
@@ -78,31 +70,13 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
-        outState.putParcelableArrayList("movie", new ArrayList<Movie>(Arrays.asList(imageAdapter.getMovies())));
+
     }
 
-    void setUpGridView(Bundle savedInstanceState) {
-        GridView gridview = (GridView) findViewById(R.id.gridview);
-        imageAdapter = new ImageAdapter(this);
-        gridview.setAdapter(imageAdapter);
 
-        if (savedInstanceState != null) {
-            List<Movie> items = savedInstanceState.getParcelableArrayList("movie");
-            Movie[] movies = items.toArray(new Movie[items.size()]);
-            imageAdapter.loadData(movies);
-        }
-        else {
-            changeSortMetric(SortBy.POPULAR);
-        }
-
-        gridview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            public void onItemClick(AdapterView<?> parent, View v,
-                                    int position, long id) {
-                Intent intent = new Intent(MainActivity.this, MovieDetailActivity.class);
-                intent.putExtra("movie", imageAdapter.getMovies()[position]);
-                startActivity(intent);
-            }
-        });
+    @Override
+    protected void onStart() {
+        super.onStart();
     }
 
     void setUpObservables() {
@@ -149,7 +123,7 @@ public class MainActivity extends AppCompatActivity {
                 .subscribe(new Action1<Movie[]>() {
                     @Override
                     public void call(Movie[] movies) {
-                        imageAdapter.loadData(movies);
+                        mGridFragment.loadMovies(movies);
                     }
                 });
     }
