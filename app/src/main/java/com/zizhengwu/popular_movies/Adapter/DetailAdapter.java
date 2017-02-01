@@ -19,9 +19,15 @@ import com.zizhengwu.popular_movies.Data.MovieContract;
 import com.zizhengwu.popular_movies.Model.Movie;
 import com.zizhengwu.popular_movies.Model.MovieReview;
 import com.zizhengwu.popular_movies.Model.MovieTrailer;
+import com.zizhengwu.popular_movies.Network.ApiHelper;
 import com.zizhengwu.popular_movies.R;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
+
+import rx.Subscriber;
+import rx.android.schedulers.AndroidSchedulers;
 
 public class DetailAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     private boolean isFavourite() {
@@ -54,6 +60,48 @@ public class DetailAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
 
     public void setMovieReviews(List<MovieReview> movieReviews) {
         this.movieReviews = movieReviews;
+        notifyDataSetChanged();
+    }
+
+    public void setMovie(Movie movie) {
+        this.movie = movie;
+        ApiHelper.fetchMovieTrailers(String.valueOf(movie.getId()), context.getResources().getString(R.string.MovieDBApiKey))
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Subscriber<MovieTrailer[]>() {
+                    @Override
+                    public void onCompleted() {
+
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+
+                    }
+
+                    @Override
+                    public void onNext(MovieTrailer[] movieTrailers) {
+                        setMovieTrailers(new ArrayList<MovieTrailer>(Arrays.asList(movieTrailers)));
+                    }
+                });
+
+        ApiHelper.fetchMovieReviews(String.valueOf(movie.getId()), context.getResources().getString(R.string.MovieDBApiKey))
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Subscriber<MovieReview[]>() {
+                    @Override
+                    public void onCompleted() {
+
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+
+                    }
+
+                    @Override
+                    public void onNext(MovieReview[] movieReviews) {
+                        setMovieReviews(new ArrayList<MovieReview>(Arrays.asList(movieReviews)));
+                    }
+                });
         notifyDataSetChanged();
     }
 

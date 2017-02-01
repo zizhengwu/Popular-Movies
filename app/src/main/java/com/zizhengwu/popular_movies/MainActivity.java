@@ -1,6 +1,7 @@
 package com.zizhengwu.popular_movies;
 
 import android.database.Cursor;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.Menu;
@@ -24,7 +25,7 @@ import rx.schedulers.Schedulers;
 import rx.subjects.PublishSubject;
 import rx.subjects.Subject;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements GridFragment.OnItemSelectedListener {
     private SortBy sortBy;
     private Subject<SortBy, SortBy> sortObservable = PublishSubject.create();
     private GridFragment mGridFragment;
@@ -39,7 +40,15 @@ public class MainActivity extends AppCompatActivity {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        mGridFragment = (GridFragment) getSupportFragmentManager().findFragmentById(R.id.fragment_grid);
+
+        if (findViewById(R.id.frame_container) != null) {
+            if (savedInstanceState == null) {
+                mGridFragment = new GridFragment();
+
+                getSupportFragmentManager().beginTransaction().add(R.id.frame_container, mGridFragment).commit();
+            }
+        }
+
         setUpObservables();
     }
 
@@ -126,5 +135,29 @@ public class MainActivity extends AppCompatActivity {
                         mGridFragment.loadMovies(movies);
                     }
                 });
+    }
+
+    @Override
+    public void onMovieSelected(Movie movie) {
+        MovieDetailFragment movieDetailFragment = (MovieDetailFragment) getSupportFragmentManager().findFragmentById(R.id.frame_detail);
+
+        if (movieDetailFragment != null) {
+            // tablet
+        }
+        else {
+            // one-pane layout and must swap frags
+
+            movieDetailFragment = new MovieDetailFragment();
+            Bundle args = new Bundle();
+
+            args.putParcelable("movie", movie);
+            movieDetailFragment.setArguments(args);
+
+            FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+            transaction.replace(R.id.frame_container, movieDetailFragment);
+            transaction.addToBackStack(null);
+
+            transaction.commit();
+        }
     }
 }

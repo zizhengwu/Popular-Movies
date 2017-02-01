@@ -1,5 +1,6 @@
 package com.zizhengwu.popular_movies;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -19,6 +20,23 @@ public class GridFragment extends Fragment {
 
     private GridMovieAdapter gridMovieAdapter;
     private GridView gridView;
+    private OnItemSelectedListener listener;
+
+    public interface  OnItemSelectedListener {
+        void onMovieSelected(Movie movie);
+    }
+
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        if (context instanceof OnItemSelectedListener) {
+            listener = (OnItemSelectedListener) context;
+        } else {
+            throw new ClassCastException(context.toString()
+                    + " must implement MyListFragment.OnItemSelectedListener");
+        }
+    }
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         super.onCreateView(inflater, container, savedInstanceState);
@@ -63,6 +81,7 @@ public class GridFragment extends Fragment {
         gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             public void onItemClick(AdapterView<?> parent, View v,
                                     int position, long id) {
+                listener.onMovieSelected(gridMovieAdapter.getMovies()[position]);
 //                Intent intent = new Intent(MainActivity.this, MovieDetailActivity.class);
 //                intent.putExtra("movie", gridMovieAdapter.getMovies()[position]);
 //                startActivity(intent);
