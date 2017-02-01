@@ -75,12 +75,12 @@ public class DetailAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
 
                     @Override
                     public void onError(Throwable e) {
-
+                        setMovieTrailers(new ArrayList<MovieTrailer>(0));
                     }
 
                     @Override
                     public void onNext(MovieTrailer[] movieTrailers) {
-                        setMovieTrailers(new ArrayList<MovieTrailer>(Arrays.asList(movieTrailers)));
+                        setMovieTrailers(new ArrayList<>(Arrays.asList(movieTrailers)));
                     }
                 });
 
@@ -94,12 +94,12 @@ public class DetailAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
 
                     @Override
                     public void onError(Throwable e) {
-
+                        setMovieReviews(new ArrayList<MovieReview>(0));
                     }
 
                     @Override
                     public void onNext(MovieReview[] movieReviews) {
-                        setMovieReviews(new ArrayList<MovieReview>(Arrays.asList(movieReviews)));
+                        setMovieReviews(new ArrayList<>(Arrays.asList(movieReviews)));
                     }
                 });
         notifyDataSetChanged();

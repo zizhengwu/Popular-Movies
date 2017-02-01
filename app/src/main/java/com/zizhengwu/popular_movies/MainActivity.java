@@ -131,7 +131,7 @@ public class MainActivity extends AppCompatActivity implements GridFragment.OnIt
                                 }
                                 return movies.toArray(new Movie[movies.size()]);
                             }
-                        });
+                        }).subscribeOn(Schedulers.io());
                     default:
                         throw new UnsupportedOperationException();
                 }
