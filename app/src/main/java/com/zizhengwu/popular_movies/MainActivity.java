@@ -1,5 +1,6 @@
 package com.zizhengwu.popular_movies;
 
+import android.content.Intent;
 import android.database.Cursor;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
@@ -152,19 +153,9 @@ public class MainActivity extends AppCompatActivity implements GridFragment.OnIt
             mMovieDetailFragment.setMovie(movie);
         }
         else {
-            // one-pane layout and must swap frags
-
-            mMovieDetailFragment = new MovieDetailFragment();
-            Bundle args = new Bundle();
-
-            args.putParcelable("movie", movie);
-            mMovieDetailFragment.setArguments(args);
-
-            FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-            transaction.replace(R.id.frame_container, mMovieDetailFragment);
-            transaction.addToBackStack(null);
-
-            transaction.commit();
+            Intent intent = new Intent(MainActivity.this, MovieDetailActivity.class);
+            intent.putExtra("movie", movie);
+            startActivity(intent);
         }
     }
 }
