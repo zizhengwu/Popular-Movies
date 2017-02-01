@@ -4,4 +4,5 @@
     <string name="sort_top_rated">Top Rated</string>
     <string name="sort_favourite">Favourite</string>
     <string name="button_favourite">favourite</string>
+    <string name="choose_movie">Touch any movie to start.</string>
 </resources>

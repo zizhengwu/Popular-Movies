@@ -74,17 +74,11 @@ public class GridFragment extends Fragment {
             Movie[] movies = items.toArray(new Movie[items.size()]);
             gridMovieAdapter.loadData(movies);
         }
-//        else {
-//            changeSortMetric(SortBy.POPULAR);
-//        }
 
         gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             public void onItemClick(AdapterView<?> parent, View v,
                                     int position, long id) {
                 listener.onMovieSelected(gridMovieAdapter.getMovies()[position]);
-//                Intent intent = new Intent(MainActivity.this, MovieDetailActivity.class);
-//                intent.putExtra("movie", gridMovieAdapter.getMovies()[position]);
-//                startActivity(intent);
             }
         });
     }

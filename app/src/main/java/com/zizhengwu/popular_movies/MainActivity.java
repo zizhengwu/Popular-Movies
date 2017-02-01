@@ -29,6 +29,7 @@ public class MainActivity extends AppCompatActivity implements GridFragment.OnIt
     private SortBy sortBy;
     private Subject<SortBy, SortBy> sortObservable = PublishSubject.create();
     private GridFragment mGridFragment;
+    private MovieDetailFragment mMovieDetailFragment;
 
     private void changeSortMetric(SortBy sortBy) {
         this.sortBy = sortBy;
@@ -41,11 +42,19 @@ public class MainActivity extends AppCompatActivity implements GridFragment.OnIt
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        if (findViewById(R.id.frame_container) != null) {
-            if (savedInstanceState == null) {
-                mGridFragment = new GridFragment();
+        if (savedInstanceState == null) {
+            mGridFragment = new GridFragment();
+            getSupportFragmentManager().beginTransaction().add(R.id.frame_container, mGridFragment).commit();
 
-                getSupportFragmentManager().beginTransaction().add(R.id.frame_container, mGridFragment).commit();
+            if (findViewById(R.id.frame_detail) != null) {
+                mMovieDetailFragment = new MovieDetailFragment();
+                getSupportFragmentManager().beginTransaction().add(R.id.frame_detail, mMovieDetailFragment).commit();
+            }
+        }
+        else {
+            mGridFragment = (GridFragment) getSupportFragmentManager().findFragmentById(R.id.frame_container);
+            if (findViewById(R.id.frame_detail) != null) {
+                mMovieDetailFragment = (MovieDetailFragment) getSupportFragmentManager().findFragmentById(R.id.frame_detail);
             }
         }
 
@@ -139,22 +148,20 @@ public class MainActivity extends AppCompatActivity implements GridFragment.OnIt
 
     @Override
     public void onMovieSelected(Movie movie) {
-        MovieDetailFragment movieDetailFragment = (MovieDetailFragment) getSupportFragmentManager().findFragmentById(R.id.frame_detail);
-
-        if (movieDetailFragment != null) {
-            // tablet
+        if (mMovieDetailFragment != null) {
+            mMovieDetailFragment.setMovie(movie);
         }
         else {
             // one-pane layout and must swap frags
 
-            movieDetailFragment = new MovieDetailFragment();
+            mMovieDetailFragment = new MovieDetailFragment();
             Bundle args = new Bundle();
 
             args.putParcelable("movie", movie);
-            movieDetailFragment.setArguments(args);
+            mMovieDetailFragment.setArguments(args);
 
             FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-            transaction.replace(R.id.frame_container, movieDetailFragment);
+            transaction.replace(R.id.frame_container, mMovieDetailFragment);
             transaction.addToBackStack(null);
 
             transaction.commit();

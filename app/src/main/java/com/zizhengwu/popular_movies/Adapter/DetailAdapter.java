@@ -220,19 +220,26 @@ public class DetailAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
         if (holder instanceof HeaderViewHolder) {
             HeaderViewHolder headerViewHolder = (HeaderViewHolder) holder;
+            if (movie.getId() != -1) {
+                headerViewHolder.title.setText(movie.getTitle());
+                headerViewHolder.release_date.setText(movie.getRelease_date());
+                headerViewHolder.overview.setText(movie.getOverview());
+                headerViewHolder.vote_average.setText(movie.getVote_average());
+                Picasso.with(context).load("http://image.tmdb.org/t/p/w185/"+movie.getPoster_path()).into(headerViewHolder.poster);
+                headerViewHolder.markFavourite.setVisibility(View.VISIBLE);
+                headerViewHolder.markFavourite.setOnClickListener(new View.OnClickListener() {
 
-            headerViewHolder.title.setText(movie.getTitle());
-            headerViewHolder.release_date.setText(movie.getRelease_date());
-            headerViewHolder.overview.setText(movie.getOverview());
-            headerViewHolder.vote_average.setText(movie.getVote_average());
-            Picasso.with(context).load("http://image.tmdb.org/t/p/w185/"+movie.getPoster_path()).into(headerViewHolder.poster);
-            headerViewHolder.markFavourite.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        changeFavourite();
+                    }
+                });
+            }
+            else {
+                headerViewHolder.title.setText(R.string.choose_movie);
+                headerViewHolder.markFavourite.setVisibility(View.GONE);
+            }
 
-                @Override
-                public void onClick(View v) {
-                    changeFavourite();
-                }
-            });
         }
         else if (holder instanceof TrailerItemViewHolder) {
             TrailerItemViewHolder trailerItemViewHolder = (TrailerItemViewHolder) holder;

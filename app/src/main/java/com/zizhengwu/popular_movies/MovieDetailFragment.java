@@ -27,7 +27,7 @@ public class MovieDetailFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_movie_detail, container, false);
 
         mRecycleView = (RecyclerView) view.findViewById(R.id.recycle_view_movie_detail);
-        mDetailAdapter = new DetailAdapter(view.getContext(), new Movie("", 0, "", "", "", ""), new ArrayList<MovieTrailer>(0), new ArrayList<MovieReview>(0));
+        mDetailAdapter = new DetailAdapter(view.getContext(), new Movie("", -1, "", "", "", ""), new ArrayList<MovieTrailer>(0), new ArrayList<MovieReview>(0));
 
         mRecycleView.setLayoutManager(new LinearLayoutManager(view.getContext()));
         mRecycleView.setAdapter(mDetailAdapter);
@@ -45,5 +45,9 @@ public class MovieDetailFragment extends Fragment {
             mDetailAdapter.setMovie((Movie) args.getParcelable("movie"));
         }
 
+    }
+
+    public void setMovie(Movie movie) {
+        mDetailAdapter.setMovie(movie);
     }
 }
