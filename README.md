@@ -8,7 +8,6 @@ My first attempt on developing an Android app in enrolling the ``Android Develop
 
 - Different layouts for phone and tablet, specifically, a master-detail layout for tablet
 - Favorite movies are stored in a ContentProvider backed by a SQLite database
-- onSaveInstanceState to support rotation
 - Retrofit and RxJava for network API call
 
 # Improvements
